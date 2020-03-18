@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>publicKey</p>
+  <textarea id="pubkey" rows="15" cols="65">-----BEGIN PUBLIC KEY-----
+    MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47
+    bo0l5fU98q5RQPT8Lv9SHfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQ==
+    -----END PUBLIC KEY-----</textarea>
+  <textarea id="prikey" rows="15" cols="65">-----BEGIN RSA PRIVATE KEY-----
+    MIIBOgIBAAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47bo0l5fU98q5RQPT8Lv9S
+    HfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQJAGGvJjhYZBtE1s/3Q3yny
+    rqwWMKbo7SxcOug+8lUkXMq1bonXHIoMA0ScD1nLpRY23wM9cAGtFqaQen7xbvF5
+    QQIhAMxWLL9SAaO682DINXQndPJ4axH2CJGvoDtwsTvumJ7zAiEAvPfN4GJTxPUo
+    Q3zBZO20c6Q4WMIAVcb04G2qYcS91+ECIB3hvEl+RJ8dB9pvbOG/o2qSEZZe1IH5
+    nQUURdbt3YPhAiEAmWAkqPAGAAHgCU7UBaBt68KpvVjRPs36acJ5HVu7nuECIAHD
+    /k9KirxIjMSfT8arkBBfC0Inabf+L7zURYMpCw0z
+    -----END RSA PRIVATE KEY-----</textarea>
+    <button onclick="encrypt()">加密</button>
+    <button onclick="decrypt()">解密</button>
+</body>
+<script src="./node_modules/jsencrypt/bin/jsencrypt.min.js"></script>
+<script>
+  let winEncrypted = ''
+  function encrypt () {
+    // 加密
+    const publicKey = document.getElementById('pubkey').innerHTML
+    const encrypt = new JSEncrypt() // 新建JSEncrypt对象
+    encrypt.setPublicKey(publicKey) // 设置公钥
+    const encrypted = encrypt.encrypt('123456') // 对密码进行加密
+    winEncrypted = encrypted
+    console.log(encrypted)
+    // encrypted = encrypted
+    // "Jp/S6Bd/CR6PeEJstoUXD5fRj5FWjoRqEzwJc+qgF1iz4kBCvtRdnrbosvBZ7pd2eCN3z0zvJFbfcaj9APG7Ew=="
+    // "HkstF7OSuV/MXY9wa3AsLedjOOXl1XlN4D0Q8msh6evzwYmX25+1JrT07BZdpKhFrTpv3JdoSKdLrlbGajtAfw=="
+  }
+  function decrypt () {
+    // 解密
+    const decrypt = new JSEncrypt()
+    const privateKey = document.getElementById('prikey').innerHTML
+    decrypt.setPrivateKey(privateKey);
+    const uncrypted = decrypt.decrypt(winEncrypted);
+    console.log(uncrypted)
+    // 123456
+  }
+</script>
+</html>
