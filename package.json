@@ -1,0 +1,20 @@
+{
+  "name": "code-collection",
+  "version": "1.0.0",
+  "description": "#### Description 1、用于收集好用的功能和代码片段\r 2、一个分支一个功能",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/haohao-xiansheng/code-collection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsencrypt": "^3.0.0-rc.1",
+    "node-rsa": "^1.0.7"
+  }
+}
