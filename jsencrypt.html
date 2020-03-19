@@ -3,49 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>Document</title>
 </head>
-<body>
-  <p>publicKey</p>
-  <textarea id="pubkey" rows="15" cols="65">-----BEGIN PUBLIC KEY-----
-    MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47
-    bo0l5fU98q5RQPT8Lv9SHfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQ==
-    -----END PUBLIC KEY-----</textarea>
-  <textarea id="prikey" rows="15" cols="65">-----BEGIN RSA PRIVATE KEY-----
-    MIIBOgIBAAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47bo0l5fU98q5RQPT8Lv9S
-    HfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQJAGGvJjhYZBtE1s/3Q3yny
-    rqwWMKbo7SxcOug+8lUkXMq1bonXHIoMA0ScD1nLpRY23wM9cAGtFqaQen7xbvF5
-    QQIhAMxWLL9SAaO682DINXQndPJ4axH2CJGvoDtwsTvumJ7zAiEAvPfN4GJTxPUo
-    Q3zBZO20c6Q4WMIAVcb04G2qYcS91+ECIB3hvEl+RJ8dB9pvbOG/o2qSEZZe1IH5
-    nQUURdbt3YPhAiEAmWAkqPAGAAHgCU7UBaBt68KpvVjRPs36acJ5HVu7nuECIAHD
-    /k9KirxIjMSfT8arkBBfC0Inabf+L7zURYMpCw0z
-    -----END RSA PRIVATE KEY-----</textarea>
-    <button onclick="encrypt()">加密</button>
-    <button onclick="decrypt()">解密</button>
+<body style="margin: 0; padding: 25px;">
+  <div class="page-header">
+    <!-- <h1 style="text-align: center;">使用jsencrypt加密解密示例</h1> -->
+  </div>
+  <section style="display: flex;">
+    <div style="width: 500px;">
+      <p class="page-header">publicKey公钥</p>
+      <textarea id="pubkey" rows="5" cols="65"  class="form-control">-----BEGIN PUBLIC KEY-----
+        MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47
+        bo0l5fU98q5RQPT8Lv9SHfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQ==
+        -----END PUBLIC KEY-----</textarea>
+    
+      <p class="page-header">privateKey私钥</p>
+      <textarea id="prikey" rows="5" cols="65"  class="form-control">-----BEGIN RSA PRIVATE KEY-----
+        MIIBOgIBAAJBAJbVFFXIiYosvfK4GfutV0dDKceewy47bo0l5fU98q5RQPT8Lv9S
+        HfQV7ocpiVHPk71LojC3Hp93ramzgUcIyJMCAwEAAQJAGGvJjhYZBtE1s/3Q3yny
+        rqwWMKbo7SxcOug+8lUkXMq1bonXHIoMA0ScD1nLpRY23wM9cAGtFqaQen7xbvF5
+        QQIhAMxWLL9SAaO682DINXQndPJ4axH2CJGvoDtwsTvumJ7zAiEAvPfN4GJTxPUo
+        Q3zBZO20c6Q4WMIAVcb04G2qYcS91+ECIB3hvEl+RJ8dB9pvbOG/o2qSEZZe1IH5
+        nQUURdbt3YPhAiEAmWAkqPAGAAHgCU7UBaBt68KpvVjRPs36acJ5HVu7nuECIAHD
+        /k9KirxIjMSfT8arkBBfC0Inabf+L7zURYMpCw0z
+        -----END RSA PRIVATE KEY-----</textarea>
+    </div>
+    <div style="margin-left: 50px; flex: 1;" >
+      <p class="page-header">操作区域</p>
+
+      <div class="input-group"  style="padding-bottom: 30px;">
+        <span class="input-group-addon" >要加密的内容</span>
+        <input type="text" id="toEncryptText" class="form-control" aria-describedby="basic-addon1">
+      </div>
+      <button  onclick="encrypt()" type="button" class="btn btn-default navbar-btn">加密</button>
+      <button  onclick="decrypt()" type="button" class="btn btn-default navbar-btn">解密</button>
+      <br>
+      <div style="padding-top: 90px">
+        <div class="input-group"  style="padding-bottom: 30px;">
+          <span class="input-group-addon" >加密后的内容</span>
+          <input type="text"  id="encryptText" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group"  style="padding-bottom: 30px;">
+          <span class="input-group-addon" >解密的后内容</span>
+          <input type="text"  id="decryptText" class="form-control" aria-describedby="basic-addon1">
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  
 </body>
 <script src="./node_modules/jsencrypt/bin/jsencrypt.min.js"></script>
 <script>
-  let winEncrypted = ''
   function encrypt () {
     // 加密
     const publicKey = document.getElementById('pubkey').innerHTML
+    const toEncryptText = document.getElementById('toEncryptText').value
+    const encryptText = document.getElementById('encryptText').value
+
     const encrypt = new JSEncrypt() // 新建JSEncrypt对象
     encrypt.setPublicKey(publicKey) // 设置公钥
-    const encrypted = encrypt.encrypt('123456') // 对密码进行加密
-    winEncrypted = encrypted
-    console.log(encrypted)
-    // encrypted = encrypted
+    const encrypted = encrypt.encrypt(toEncryptText) // 对密码进行加密
+    document.getElementById('encryptText').value = encrypted
+
     // "Jp/S6Bd/CR6PeEJstoUXD5fRj5FWjoRqEzwJc+qgF1iz4kBCvtRdnrbosvBZ7pd2eCN3z0zvJFbfcaj9APG7Ew=="
     // "HkstF7OSuV/MXY9wa3AsLedjOOXl1XlN4D0Q8msh6evzwYmX25+1JrT07BZdpKhFrTpv3JdoSKdLrlbGajtAfw=="
   }
   function decrypt () {
     // 解密
+    const decryptText = document.getElementById('decryptText').value
+    const encryptText = document.getElementById('encryptText').value
     const decrypt = new JSEncrypt()
     const privateKey = document.getElementById('prikey').innerHTML
     decrypt.setPrivateKey(privateKey);
-    const uncrypted = decrypt.decrypt(winEncrypted);
-    console.log(uncrypted)
-    // 123456
+    const uncrypted = decrypt.decrypt(encryptText);
+    document.getElementById('decryptText').value = uncrypted
   }
 </script>
 </html>
